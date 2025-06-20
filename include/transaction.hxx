@@ -13,8 +13,6 @@ public:
 	void removeEntry();
 	void editEntry();
 	void showPrevious();
-	//void fetchData(const std::string& filePath);
-	//void writeData(const std::string& filePath);
 	void connectDatabase(const std::string& filePath);
 private:
 	 void executeSQL(const std::string& query);
