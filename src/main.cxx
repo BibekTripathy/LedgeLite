@@ -25,7 +25,8 @@ int main(int argc, char** argv) {
 			<< "2 - Add new entry\n"
 			<< "3 - Remove an Entry\n"
 			<< "4 - Edit an Entry\n"
-			<< "5 - Exit\n"
+			<< "5 - Search\n"
+			<< "6 - Exit\n"
 			<< std::flush;
 		char choice;
 		std::cin >> choice;
@@ -45,6 +46,9 @@ int main(int argc, char** argv) {
 			transaction.editEntry();
 			break;
 		case '5':
+			transaction.search();
+			break;
+		case '6':
 			std::cout << "Thanks for using LedgeLite." << std::endl;
 			return 0;
 		default:

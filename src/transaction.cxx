@@ -10,7 +10,7 @@
 #include <sqlite3.h>
 #include "transaction.hxx"
 
-void Transaction::connectDatabase(const std::string& filePath) {  // 🔁 Changed from fetchData
+void Transaction::connectDatabase(const std::string& filePath) {
 	dbPath = filePath;
 	int ReturnCode = sqlite3_open(dbPath.c_str(), &db);
 	if (ReturnCode) {
@@ -200,4 +200,57 @@ void Transaction::editEntry() {
 	std::stringstream ss;
 	ss << "UPDATE transactions SET " << column << " = '" << newData << "' WHERE id = " << serialNo << ";";
 	executeSQL(ss.str());
+}
+
+void Transaction::search() {
+	std::cout << "Select the field to filter by:\n";
+	std::cout << "1. Counterparty\n";
+	std::cout << "2. Date\n";
+	std::cout << "3. Category\n";
+	std::cout << "4. Amount\n";
+	std::cout << "5. Notes\n";
+	std::cout << "Enter your choice [1-5]: ";
+
+	char input{ '\0' };
+	std::cin >> input;
+	std::cin.ignore();
+	std::string column;
+	std::string value;
+
+	switch (input) {
+	case '1':
+		column = "counterparty";
+		break;
+	case '2':
+		column = "date";
+		break;
+	case '3':
+		column = "category";
+		break;
+	case '4':
+		column = "amount";
+		break;
+	case '5':
+		column = "notes";
+		break;
+	default:
+		std::cerr << "Invalid choice.\n";
+		return;
+	}
+
+	std::cout << "Enter the value to search: ";
+	std::getline(std::cin, value);
+
+	std::stringstream query;
+	if (column == "amount") {
+		query << "SELECT id, counterparty, amount, date, time, category, notes FROM transactions "
+			<< "WHERE " << column << " = '" << value << "';";
+	}
+	else {
+		query << "SELECT id, counterparty, amount, date, time, category, notes FROM transactions "
+			<< "WHERE " << column << " LIKE '%" << value << "%';";
+	}
+
+	std::cout << "\nFiltered Results:\n";
+	sqlite3_exec(db, query.str().c_str(), printCallback, 0, nullptr);
 }

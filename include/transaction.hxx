@@ -14,9 +14,10 @@ public:
 	void editEntry();
 	void showPrevious();
 	void connectDatabase(const std::string& filePath);
-private:
-	 void executeSQL(const std::string& query);
-    static int printCallback(void* NotUsed, int argc, char** argv, char** azColName);
+	void search();
+	private:
+	void executeSQL(const std::string& query);
+	static int printCallback(void* NotUsed, int argc, char** argv, char** azColName);
 };
 
 #endif // !TRANSACTION_HXX
