@@ -2,24 +2,22 @@
 #define TRANSACTION_HXX
 
 #include <string>
-#include <vector>
-
+//#include <vector>
+#include <sqlite3.h>
 class Transaction {
 private:
-	struct dataRow {
-		std::string counterparty, amount, date, time, category, notes;
-	};
-	std::vector<dataRow> database;
-
+	sqlite3* db;
+	std::string dbPath;
 public:
 	void addEntry();
 	void removeEntry();
 	void editEntry();
 	void showPrevious();
-	void fetchData(const std::string& filePath);
-
-private:
-	void editField(int field, int serialNo);
+	void connectDatabase(const std::string& filePath);
+	void search();
+	private:
+	void executeSQL(const std::string& query);
+	static int printCallback(void* NotUsed, int argc, char** argv, char** azColName);
 };
 
-#endif
+#endif // !TRANSACTION_HXX

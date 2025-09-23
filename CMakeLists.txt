@@ -13,11 +13,18 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 # Include directory
 include_directories(include)
 
+# Detect dependencies
+find_package(SQLite3 REQUIRED)
+
 # Source files
 file(GLOB_RECURSE SOURCES src/*.cxx)
 
 # Define the executable
 add_executable(LedgeLite ${SOURCES})
+
+# Link dependency libraries
+target_include_directories(LedgeLite PRIVATE ${SQLite3_INCLUDE_DIRS})
+target_link_libraries(LedgeLite PRIVATE ${SQLite3_LIBRARIES})
 
 # Optional: add warnings
 target_compile_options(LedgeLite PRIVATE -Wall -Wextra -O2)
